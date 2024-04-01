@@ -305,7 +305,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
       _id : crafts.length + 1,
       name: req.body.name,
       description:req.body.description,
-      ingredients:req.body.ingredients.split(",")
+      ingredients:req.body.supplies.split(",")
     }
 
     if(req.file){
