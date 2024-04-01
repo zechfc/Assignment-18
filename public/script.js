@@ -202,6 +202,8 @@ const pop = (craft) => {
     
     const addCraft = async(e)=> {
         e.preventDefault();
+        console.log("...formData");
+
         const form = document.getElementById("add-craft-form");
         const formData = new FormData(form);
         formData.append("supplies", getSupplies());
