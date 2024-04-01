@@ -20,10 +20,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //my crafts list
-app.get("/api/crafts", (req,res) => {
-  console.log("Someone is requesting our api")
 
-const crafts = [];
+
+let crafts = [];
 crafts[0] = {
     name: "Beaded JellyFish",
     image: "crafts/bead-jellyfish.jpg",
@@ -279,9 +278,6 @@ crafts[3] = {
     ]
 }
 
-console.log(crafts);
-res.json(crafts);
-});
 
 
 
