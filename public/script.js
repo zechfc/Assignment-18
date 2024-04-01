@@ -46,7 +46,6 @@ let i=0;
    
 
     craftsJSON.forEach((craft)=>{
-        console.log(i);
         
 
         if(i<7){
