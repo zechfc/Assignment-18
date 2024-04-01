@@ -211,7 +211,7 @@ const pop = (craft) => {
         const response = await fetch("/api/crafts/", {
             method:"POST",
             body:formData
-        });
+        }).json();
     
         if(response.status != 200){
             console.log("error posting data");
