@@ -6,6 +6,7 @@ app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 const cors = require("cors");
+const { test } = require("media-typer");
 app.use(cors());
 
 const storage = multer.diskStorage({
@@ -298,6 +299,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
   const result = validateCraft(req.body);
 
   if(result.error){
+    console.log(test)
     res.status(400).send(result.error.details[0].message);
   }
 
