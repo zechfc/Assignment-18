@@ -299,7 +299,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
   const result = validateCraft(req.body);
 
   if(result.error){
-    console.log(test)
+    console.log("test")
     res.status(400).send(result.error.details[0].message);
   }
 
