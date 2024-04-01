@@ -208,7 +208,7 @@ const pop = (craft) => {
         formData.append("supplies", getSupplies());
         console.log(...formData);
     
-        const response = await fetch("/api/crafts/", {
+        const response = await fetch("/api/crafts", {
             method:"POST",
             body:formData
         });
