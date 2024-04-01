@@ -205,7 +205,7 @@ const pop = (craft) => {
         e.preventDefault();
         const form = document.getElementById("add-craft-form");
         const formData = new FormData(form);
-        formData.append(getSupplies());
+        formData.append("supplies", getSupplies());
         console.log(...formData);
     
         const response = await fetch("/api/crafts/", {
