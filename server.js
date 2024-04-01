@@ -10,7 +10,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/images/");
+    cb(null, "./public/crafts/");
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname);
@@ -309,7 +309,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     }
 
     if(req.file){
-      craft.img = "images/" + req.file.filename;
+      craft.img = "crafts/" + req.file.filename;
     }
 
     crafts.push(craft);
