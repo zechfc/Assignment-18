@@ -205,7 +205,7 @@ const pop = (craft) => {
         e.preventDefault();
         const form = document.getElementById("add-craft-form");
         const formData = new FormData(form);
-        formData.append("supplies", getSupplies());
+        formData.append(getSupplies());
         console.log(...formData);
     
         const response = await fetch("/api/crafts/", {
@@ -226,7 +226,7 @@ const pop = (craft) => {
     
     const getSupplies = () => {
         const inputs = document.querySelectorAll("#supply-boxes input");
-        const supplies = [];
+        const supplies=[];
     
         inputs.forEach((input)=>{
             supplies.push(input.value);
