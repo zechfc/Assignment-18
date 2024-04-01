@@ -295,7 +295,7 @@ app.get("/api/crafts", (req, res)=>{
 });
 
 app.post("/api/crafts", upload.single("img"), (req, res) => {
-  const result = validatecraft(req.body);
+  const result = validateCraft(req.body);
 
   if(result.error){
     res.status(400).send(result.error.details[0].message);
@@ -316,7 +316,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
     res.send(crafts);
 });
 
-const validatecraft = (craft) => {
+const validateCraft = (craft) => {
   const schema = Joi.object({
     _id:Joi.allow(""),
     ingredients:Joi.allow(""),
