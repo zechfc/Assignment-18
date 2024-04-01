@@ -208,7 +208,7 @@ const pop = (craft) => {
         formData.append("supplies", getSupplies());
         console.log(...formData);
     
-        const response = await fetch("/api/crafts", {
+        const response = await fetch("/api/crafts/", {
             method:"POST",
             body:formData
         });
@@ -227,9 +227,11 @@ const pop = (craft) => {
     const getSupplies = () => {
         const inputs = document.querySelectorAll("#supply-boxes input");
         const supplies=[];
-    
+        console.log(supplies);
         inputs.forEach((input)=>{
             supplies.push(input.value);
+            console.log(supplies);
+
         });
     
         return supplies;
