@@ -1,7 +1,7 @@
 const getcrafts = async() => {
     try{
         
-        return (await fetch("/api/crafts")).json();
+        return (await fetch("/api/crafts/")).json();
         
     } catch (error){
         console.log("error retrieving data");
