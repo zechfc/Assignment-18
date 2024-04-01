@@ -3,6 +3,7 @@
 
 <head>
     <title>Assignment 14</title>
+    <link rel="stylesheet" href="styles1.css" />    
     <link rel="stylesheet" href="styles.css" />    
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -10,7 +11,7 @@
 </head>
 
 <body>
-    <h1>Buy and Sell Crafts +</h1>
+    <h1>Buy and Sell Crafts<a href="#" id="add-link">+</a></h1>
      
     <div id="crafts-div"></div>
 
@@ -20,6 +21,51 @@
           <div class="w3-container">
             <span id="dialog-close" class="w3-button w3-display-topright">&times;</span> <!--the X at the top left-->
             <section id="dialog-details" class="columns">
+              <form id="add-craft-form" method="post" class="hidden">
+                <div class="columns">
+                  <section class="three">
+                    <p id="img-prev-section">
+                        <img  id="img-prev" src="crafts/200x300.gif">
+                    </p>
+                    <p>
+                      <label for="img" id="img-btn" class="btn style-btn">Select Image</label>
+                      <input type="file" id="img" name="img" accept="image/*" />
+                    </p>
+                </section>
+                  <section class="three">
+                    <h3>Make Changes to your Craft</h3>
+                    <p>
+                        <label for="name ">Craft Name:</label>
+                        <input type="text" id="name" name="name" required />
+                    </p>
+                    <p>
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" required />
+                    </p>
+                    <div class="columns">
+                      <p id="supplies-p" class="">
+                        <label class="one inline" >Supplies:</label>
+                        <button class="inline style-btn" id="add-supply" type="submit">Add Supplies</button>
+
+                        <input class="" type="text" id="supplies" name="supplies" required />
+                        <section id="supply-boxes"></section>
+                    </p>
+                    
+                    </div>
+                    
+                  </section>
+                 
+
+                </div>
+                
+                <section id="end-btn" class="columns">
+                  <p>
+                    <button class="one style-btn" id="cancel" type="submit">Cancel</button>
+                    <button class="one style-btn" type="submit">Save</button>
+                </p>
+                </section>
+            </form>
+
                 <section id="dialog-img" class="one">    
 
                 </section>

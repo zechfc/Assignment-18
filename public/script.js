@@ -167,7 +167,95 @@ const pop = (craft) => {
         document.getElementById("dialog").style.display = "none";
     };
 
+    const openDialog = (id) => {
+        document.getElementById("dialog").style.display = "block";
+        document.querySelectorAll("#dialog-details > *").forEach((item)=> {
+            item.classList.add("hidden");
+        });
+        document.getElementById(id).classList.remove("hidden");
+    }
 
-showcrafts();
+    const showCraftForm = (e) => {
+        e.preventDefault();
+        resetForm();
+        document.getElementById("img-prev").src="crafts/200x300.gif";
+
+        openDialog("add-craft-form");
+
+    }
+    
+    const addSupply = (e) => {
+        e.preventDefault();
+        const section = document.getElementById("supply-boxes");
+        const input = document.createElement("input");
+        input.type = "text";
+        section.append(input);
+        input.classList.add("columns")
+        
+    }
+    
+    const resetForm = () => {
+        const form = document.getElementById("add-craft-form");
+        form.reset();
+        document.getElementById("supply-boxes").innerHTML = "";
+        document.getElementById("img-prev").src="";
+    };
+    
+    const addCraft = async(e)=> {
+        e.preventDefault();
+        const form = document.getElementById("add-craft-form");
+        const formData = new FormData(form);
+        formData.append("supplies", getSupplies());
+        console.log(...formData);
+    
+        const response = await fetch("/api/crafts", {
+            method:"POST",
+            body:formData
+        });
+    
+        if(response.status != 200){
+            console.log("error posting data");
+        }
+    
+        await response.json();
+        resetForm();
+        document.getElementById("dialog").style.display = "none";
+        showCrafts();
+    
+    };
+    
+    const getSupplies = () => {
+        const inputs = document.querySelectorAll("#supply-boxes input");
+        const supplies = [];
+    
+        inputs.forEach((input)=>{
+            supplies.push(input.value);
+        });
+    
+        return supplies;
+    }
+    
+    
+    showcrafts();
+    document.getElementById("add-craft-form").onsubmit = addCraft;
+    document.getElementById("add-link").onclick = showCraftForm;
+    document.getElementById("add-supply").onclick = addSupply;
+    document.getElementById("cancel").onclick = () => {
+        document.getElementById("dialog").style.display = "none";
+    };
+    
+    document.getElementById("img").onchange = (e) => {
+        const prev = document.getElementById("img-prev");
+    
+        //they didn't pick an image
+        if(!e.target.files.length){
+            prev.src="crafts/200x300.gif";
+            return;
+        }
+        
+    
+        prev.src = URL.createObjectURL(e.target.files.item(0));
+    }
+
 
 
