@@ -20,9 +20,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 //my crafts list
+app.get("/api/crafts", (req,res) => {
+  console.log("Someone is requesting our api")
 
-
-let crafts = [];
+const crafts = [];
 crafts[0] = {
     name: "Beaded JellyFish",
     image: "crafts/bead-jellyfish.jpg",
@@ -278,6 +279,9 @@ crafts[3] = {
     ]
 }
 
+console.log(crafts);
+res.json(crafts);
+});
 
 
 
@@ -294,7 +298,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
   const result = validateCraft(req.body);
 
   if(result.error){
-    return res.status(400).send(result.error.details[0].message);
+    res.status(400).send(result.error.details[0].message);
   }
 
     const craft = {
@@ -315,7 +319,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
 const validateCraft = (craft) => {
   const schema = Joi.object({
     _id:Joi.allow(""),
-    supplies:Joi.string().min(3).required(),
+    supplies:Joi.allow(""),
     name:Joi.string().min(3).required(),
     description:Joi.string().min(3).required()
   });
