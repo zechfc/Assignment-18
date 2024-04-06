@@ -307,11 +307,11 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
       _id : crafts.length + 1,
       name: req.body.name,
       description:req.body.description,
-      supplies:req.body.suppliez.split(",")
+      supplies:req.body.supplies.split(",")
     }
 
     if(req.file){
-      craft.img = "crafts/" + req.file.filename;
+      craft.image = "crafts/" + req.file.filename;
     }
 
     crafts.push(craft);
@@ -321,7 +321,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
 const validateCraft = (craft) => {
   const schema = Joi.object({
     _id:Joi.allow(""),
-    supplies:Joi.allow(""),
+    supplies:Joi.string().min(3).required(),
     name:Joi.string().min(3).required(),
     description:Joi.string().min(3).required()
   });
