@@ -10,15 +10,120 @@ const getcrafts = async() => {
 
 };
 
+let i =0;
 const showcrafts = async() => {
-    let craftsJSON = await getcrafts();
-    console.log("after fetch");
-    let craftsDiv = document.getElementById("crafts-div")
+    const craftsJSON = await getcrafts();
+    const craftsDiv = document.getElementById("crafts-div")
 
+    if(craftsJSON == ""){
+        craftsDiv.innerHTML = "sorry no crafts";
+        return;
+    }
+
+    //now loop through the json
+let i=0;
+   
     
+
+
+
+    const column1 = document.createElement("div");
+    const column2 = document.createElement("div");
+    const column3 = document.createElement("div");
+    const column4 = document.createElement("div");
+
+    craftsDiv.classList.add("row");
+
+
+    column1.classList.add("column");
+    column2.classList.add("column");
+    column3.classList.add("column");
+    column4.classList.add("column");
+    craftsDiv.append(column1);
+    craftsDiv.append(column2);
+    craftsDiv.append(column3);
+    craftsDiv.append(column4);
+
+   
+
+    craftsJSON.forEach((craft)=>{
+        
+
+        if(i<7){
+            i++;
+        
+            craftsDiv.append(column1);
+            const box = document.createElement("section");
+        
+        
+            const img = document.createElement("img");
+            
+
+
+            img.src = craft.image;
+            column1.append(img);
+            img.addEventListener("click", () => {
+                pop(craft);
+            });
+           
+        }
     
+        else if(i<13){
+            i++;
+        
+            craftsDiv.append(column2);
+            const box = document.createElement("section");
+            box.classList.add("hide")
+        
+            const img2 = document.createElement("img");
+            img2.src = craft.image;
+            column2.append(img2);
+            img2.addEventListener("click", () => {
+                pop(craft);
+            });
+        }
+        else if(i <19){
+            i++;
+        
+            craftsDiv.append(column3);
+    
+        
+        
+            const img3 = document.createElement("img");
+            img3.src = craft.image;
+            column3.append(img3);
+            img3.addEventListener("click", () => {
+                pop(craft);
+            });
+        }
+        else{
+            i++;
+        
+            craftsDiv.append(column4);
+            const box = document.createElement("section");
+            
+            const img4 = document.createElement("img");
+            img4.src = craft.image;
+            column4.append(img4);
+            img4.addEventListener("click", () => {
+                pop(craft);
+            });
+        
+        }
+
+
+      
+
+       
+    
+    })
    };
 //https://www.w3schools.com/w3css/w3css_modal.asp
+
+
+const getCraftImage = (craft) => {
+    const image = document.createElement("img");
+}
 
 const pop = (craft) => {
     document.getElementById("dialog").style.display = "block";
@@ -167,6 +272,4 @@ const pop = (craft) => {
     
         prev.src = URL.createObjectURL(e.target.files.item(0));
     }
-
-
 
