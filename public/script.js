@@ -126,6 +126,8 @@ const getCraftImage = (craft) => {
 }
 
 const pop = (craft) => {
+    openDialog("dialog-content");
+
     document.getElementById("dialog").style.display = "block";
 
     const box = document.getElementById("dialog-content");
@@ -146,6 +148,18 @@ const pop = (craft) => {
     const title = document.createElement("h2");
     title.innerHTML = craft.name;
 
+
+    const section = document.createElement("section");
+    section.classList.add("links")
+
+    const dLink = document.createElement("a");
+    dLink.innerHTML = "	&#9249;";
+    dLink.id = "delete-link";
+
+    const eLink = document.createElement("a");
+    eLink.innerHTML = "&#9998;";
+    eLink.id = "edit-link";
+
     const subheader = document.createElement("h3");
     subheader.innerHTML = "Supplies";
 
@@ -162,12 +176,23 @@ const pop = (craft) => {
     imgSection.append(imgpop);
 
     box.append(title);
+    section.append(dLink);
+    section.append(eLink);
+    title.append(section);
+
     box.append(desc);
     box.append(subheader);
     box.append(list);
     
 };
 
+const showRecipeForm = (e) => {
+    openDialog("add-craft-form");
+    console.log(e.target);
+    if (e.target.getAttribute("id") != "edit-link") {
+      resetForm();
+    }
+  };
     
 
 
