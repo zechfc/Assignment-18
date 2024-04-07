@@ -387,7 +387,7 @@ app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
 
   console.log("yay validated");
   if (req.file) {
-    craft.img = "crafts/" + req.file.filename;
+    craft.image = "crafts/" + req.file.filename;
   }
 
   res.send(crafts);

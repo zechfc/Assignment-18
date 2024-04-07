@@ -125,8 +125,8 @@ let i=0;
 
 const pop = (craft) => {
     openDialog("dialog-content");
-    // document.getElementById("dialog-img").classList.remove("hidden");
-    // document.getElementById("dialog-img").classList.add("show");
+    document.getElementById("dialog-img").classList.remove("hidden");
+    document.getElementById("dialog-img").classList.add("show");
 
    
 
