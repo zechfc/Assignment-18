@@ -14,6 +14,7 @@ let i =0;
 const showcrafts = async() => {
     const craftsJSON = await getcrafts();
     const craftsDiv = document.getElementById("crafts-div")
+    craftsDiv.innerHTML = "";
 
     if(craftsJSON == ""){
         craftsDiv.innerHTML = "sorry no crafts";
@@ -57,20 +58,20 @@ let i=0;
         
         
             const img = document.createElement("img");
-            
+
 
 
             img.src = craft.image;
             column1.append(img);
             img.addEventListener("click", () => {
-                pop(craft, craftsJSON);
+                pop(craft);
             });
            
         }
     
         else if(i<13){
             i++;
-        
+
             craftsDiv.append(column2);
             const box = document.createElement("section");
             box.classList.add("hide")
@@ -79,12 +80,12 @@ let i=0;
             img2.src = craft.image;
             column2.append(img2);
             img2.addEventListener("click", () => {
-                pop(craft,craftsJSON);
+                pop(craft);
             });
         }
         else if(i <19){
             i++;
-        
+
             craftsDiv.append(column3);
     
         
@@ -93,7 +94,7 @@ let i=0;
             img3.src = craft.image;
             column3.append(img3);
             img3.addEventListener("click", () => {
-                pop(craft, craftsJSON);
+                pop(craft);
             });
         }
         else{
@@ -105,8 +106,9 @@ let i=0;
             const img4 = document.createElement("img");
             img4.src = craft.image;
             column4.append(img4);
+
             img4.addEventListener("click", () => {
-                pop(craft, craftsJSON);
+                pop(craft);
             });
         
         }
@@ -121,14 +123,10 @@ let i=0;
 //https://www.w3schools.com/w3css/w3css_modal.asp
 
 
-const getCraftImage = (craft) => {
-    const image = document.createElement("img");
-}
-
-const pop = (craft, craftsJSON) => {
+const pop = (craft) => {
     openDialog("dialog-content");
-    document.getElementById("dialog-img").classList.remove("hidden");
-    document.getElementById("dialog-img").classList.add("show");
+    // document.getElementById("dialog-img").classList.remove("hidden");
+    // document.getElementById("dialog-img").classList.add("show");
 
    
 
@@ -191,28 +189,26 @@ const pop = (craft, craftsJSON) => {
     eLink.onclick = showCraftForm;
     dLink.onclick = deleteCraft.bind(this, craft);
     
-    console.log(craftsJSON);
 
-   let num = (craftsJSON.indexOf(craft));
-   console.log("this num =" +num);
+   console.log("this num =" +craft._id);
 
-    populateEditForm(craft , num);
+    populateEditForm(craft);
 
     
 };
 
-const populateEditForm = (craft, num) => {
+const populateEditForm = (craft) => {
     const form = document.getElementById("add-craft-form");
 
     console.log(document.getElementById("add-craft-form"));
-    console.log("test " + num);
+    console.log("test " + craft._id);
 
-    // form._id.value = num;
+    form._id.value = craft._id;
     console.log(form._id.value);
 
     form.name.value = craft.name;
     form.description.value = craft.description;
-    document.getElementById("img-prev").src = craft.img;
+    document.getElementById("img-prev").src = craft.image;
 
     populateSupplies(craft.supplies);
 
@@ -233,7 +229,7 @@ const populateEditForm = (craft, num) => {
 
 
   const addEditCraft = async (e) => {
-    console.log("start");
+    console.log("start edit");
 
     e.preventDefault();
     const form = document.getElementById("add-craft-form");
@@ -270,8 +266,8 @@ const populateEditForm = (craft, num) => {
     showcrafts();
   };
   
-  const deleteCraft = async(recipe) => {
-    //console.log("deleting recipe " + recipe._id);
+  const deleteCraft = async(craft) => {
+    console.log("deleting craft " + craft._id);
     let response = await fetch(`/api/crafts/${craft._id}`,{
       method:"DELETE",
       headers:{
@@ -299,12 +295,11 @@ const populateEditForm = (craft, num) => {
     }
 
     const showCraftForm = (e) => {
-        e.preventDefault();
-        resetForm();
-        document.getElementById("img-prev").src="crafts/200x300.gif";
-
         openDialog("add-craft-form");
-
+        console.log(e.target);
+        if (e.target.getAttribute("id") != "edit-link") {
+          resetForm();
+        }
     }
     
     const addSupply = (e) => {
@@ -321,35 +316,13 @@ const populateEditForm = (craft, num) => {
     }
     
     const resetForm = () => {
+        console.log("reset");
+
         const form = document.getElementById("add-craft-form");
         form.reset();
         document.getElementById("supply-boxes").innerHTML = "";
-        document.getElementById("img-prev").src="";
-    };
-    
-    const addCraft = async(e)=> {
-        e.preventDefault();
-        console.log("...formData");
-
-        const form = document.getElementById("add-craft-form");
-        const formData = new FormData(form);
-        formData.append("supplies", getSupplies());
-        console.log(...formData);
-    
-        const response = await fetch("/api/crafts", {
-            method:"POST",
-            body:formData
-        });
-    
-        if(response.status != 200){
-            console.log("error posting data");
-        }
-    
-        await response.json();
-        resetForm();
-        document.getElementById("dialog").style.display = "none";
-        showcrafts();
-    
+        console.log("crafts/200x300.gif")
+        document.getElementById("img-prev").src="crafts/200x300.gif";
     };
     
     const getSupplies = () => {
@@ -387,7 +360,10 @@ const populateEditForm = (craft, num) => {
             return;
         }
         
-    
-        prev.src = URL.createObjectURL(e.target.files.item(0));
+        document.getElementById("img-prev").src = URL.createObjectURL(
+            e.target.files.item(0)
+        );
+
+        // prev.src = URL.createObjectURL(e.target.files.item(0));
     }
 
