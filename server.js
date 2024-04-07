@@ -6,7 +6,6 @@ app.use(express.static("public"));
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 const cors = require("cors");
-const { test } = require("media-typer");
 app.use(cors());
 
 const storage = multer.diskStorage({
@@ -17,7 +16,16 @@ const storage = multer.diskStorage({
     cb(null, file.originalname);
   },
 });
-const crafts = [];
+
+const upload = multer({ storage: storage });
+
+//show our index file when they go to the root of our website
+app.get("/", (req, res)=>{
+  res.sendFile(__dirname + "/index.html");
+});
+
+
+let crafts = [];
 
 crafts[0] = {
   name: "Beaded JellyFish",
@@ -273,23 +281,15 @@ crafts[24] ={
     "Glitter"
   ]
 }
-const upload = multer({ storage: storage });
 
 //my crafts list
-app.get("/api/crafts", (req,res) => {
-  console.log("Someone is requesting our api")
+// app.get("/api/crafts", (req,res) => {
+// console.log("Someone is requesting our api")
 
+// console.log(crafts);
+// res.json(crafts);
+// });
 
-console.log(crafts);
-res.json(crafts);
-});
-
-
-
-//show our index file when they go to the root of our website
-app.get("/", (req, res)=>{
-    res.sendFile(__dirname + "/index.html");
-});
 
 app.get("/api/crafts", (req, res)=>{
     res.send(crafts);
@@ -316,6 +316,50 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
 
     crafts.push(craft);
     res.send(crafts);
+});
+
+
+app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
+  const recipe = crafts.find((r) => r._id === parseInt(req.params.id));
+
+  console.log("I found the craft " + craft.name);
+
+  if(!craft){
+    res.send(404).send("craft with given id was not found");
+  }
+
+  const result = validateCraft(req.body);
+
+  
+  if (result.error) {
+    res.status(400).send(result.error.details[0].message);
+    return;
+  }
+
+  craft.name = req.body.name;
+  craft.description = req.body.description;
+  craft.supplies = req.body.supplies.split(",");
+
+
+  console.log("yay validated");
+  if (req.file) {
+    craft.img = "crafts/" + req.file.filename;
+  }
+
+  res.send(crafts);
+});
+
+app.delete("/api/crafts/:id", (req, res) => {
+  const craft = crafts.find((r) => r._id === parseInt(req.params.id));
+S
+  if(!craft){
+    res.status(404).send("The craft with the given id was not found");
+    return;
+  }
+  
+  const index = crafts.indexOf(craft);
+  crafts.splice(index, 1);
+  res.send(craft);
 });
 
 const validateCraft = (craft) => {

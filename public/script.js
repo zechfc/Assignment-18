@@ -63,7 +63,7 @@ let i=0;
             img.src = craft.image;
             column1.append(img);
             img.addEventListener("click", () => {
-                pop(craft);
+                pop(craft, craftsJSON);
             });
            
         }
@@ -79,7 +79,7 @@ let i=0;
             img2.src = craft.image;
             column2.append(img2);
             img2.addEventListener("click", () => {
-                pop(craft);
+                pop(craft,craftsJSON);
             });
         }
         else if(i <19){
@@ -93,7 +93,7 @@ let i=0;
             img3.src = craft.image;
             column3.append(img3);
             img3.addEventListener("click", () => {
-                pop(craft);
+                pop(craft, craftsJSON);
             });
         }
         else{
@@ -106,7 +106,7 @@ let i=0;
             img4.src = craft.image;
             column4.append(img4);
             img4.addEventListener("click", () => {
-                pop(craft);
+                pop(craft, craftsJSON);
             });
         
         }
@@ -125,8 +125,12 @@ const getCraftImage = (craft) => {
     const image = document.createElement("img");
 }
 
-const pop = (craft) => {
+const pop = (craft, craftsJSON) => {
     openDialog("dialog-content");
+    document.getElementById("dialog-img").classList.remove("hidden");
+    document.getElementById("dialog-img").classList.add("show");
+
+   
 
     document.getElementById("dialog").style.display = "block";
 
@@ -183,23 +187,108 @@ const pop = (craft) => {
     box.append(desc);
     box.append(subheader);
     box.append(list);
+
+    eLink.onclick = showCraftForm;
+    dLink.onclick = deleteCraft.bind(this, craft);
+    
+    console.log(craftsJSON);
+
+   let num = (craftsJSON.indexOf(craft));
+   console.log("this num =" +num);
+
+    populateEditForm(craft , num);
+
     
 };
 
-const showRecipeForm = (e) => {
-    openDialog("add-craft-form");
-    console.log(e.target);
-    if (e.target.getAttribute("id") != "edit-link") {
-      resetForm();
+const populateEditForm = (craft, num) => {
+    const form = document.getElementById("add-craft-form");
+
+    console.log(document.getElementById("add-craft-form"));
+    console.log("test " + num);
+
+    // form._id.value = num;
+    console.log(form._id.value);
+
+    form.name.value = craft.name;
+    form.description.value = craft.description;
+    document.getElementById("img-prev").src = craft.img;
+
+    populateSupplies(craft.supplies);
+
+  }
+
+  const populateSupplies = (supplies) => {
+
+    const section = document.getElementById("supply-boxes");
+    supplies.forEach((supplies)=>{
+      const input = document.createElement("input");
+      input.type = "text"
+      input.value = supplies;
+      section.append(input);
+    });
+        console.log("finsh");
+
+  }
+
+
+  const addEditCraft = async (e) => {
+    console.log("start");
+
+    e.preventDefault();
+    const form = document.getElementById("add-craft-form");
+    const formData = new FormData(form);
+    let response;
+    formData.append("supplies", getSupplies());
+  
+    console.log(...formData);
+  
+    //add request
+    if (form._id.value.trim() == "") {
+      console.log("in post");
+      response = await fetch("/api/crafts", {
+        method: "POST",
+        body: formData,
+      });
+    } else {
+      //put request
+      console.log("in put");
+      response = await fetch(`/api/crafts/${form._id.value}`, {
+        method: "PUT",
+        body: formData,
+      });
     }
+  
+    //successfully got data from server
+    if (response.status != 200) {
+      console.log("Error adding / editing data");
+    }
+  
+    await response.json();
+    resetForm();
+    document.getElementById("dialog").style.display = "none";
+    showcrafts();
   };
-    
-
-
-
-    document.getElementById("dialog-close").onclick = () => {
-        document.getElementById("dialog").style.display = "none";
-    };
+  
+  const deleteCraft = async(recipe) => {
+    //console.log("deleting recipe " + recipe._id);
+    let response = await fetch(`/api/crafts/${craft._id}`,{
+      method:"DELETE",
+      headers:{
+        "Content-Type":"application/json;charset=utf-8"
+      }
+    });
+  
+    if(response.status !=200){
+      console.log("Error deleting");
+      return;
+    }
+    let result = await response.json();
+      resetForm();
+      showcrafts();
+      document.getElementById("dialog").style.display = "none";
+  
+  }
 
     const openDialog = (id) => {
         document.getElementById("dialog").style.display = "block";
@@ -276,9 +365,13 @@ const showRecipeForm = (e) => {
         return supplies;
     }
     
+    document.getElementById("dialog-close").onclick = () => {
+        document.getElementById("dialog").style.display = "none";
+    };
+
     
     showcrafts();
-    document.getElementById("add-craft-form").onsubmit = addCraft;
+    document.getElementById("add-craft-form").onsubmit = addEditCraft;
     document.getElementById("add-link").onclick = showCraftForm;
     document.getElementById("add-supply").onclick = addSupply;
     document.getElementById("cancel").onclick = () => {
