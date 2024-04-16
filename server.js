@@ -97,13 +97,13 @@ app.get("/", (req, res)=>{
 
 
 app.get("/api/crafts", async (req, res) => {
-  const crafts = await craft.find();
+  const crafts = await Craft.find();
   res.send(crafts);
 });
 
 app.get("/api/crafts/:id", async (req, res) => {
   const id = req.params.id;
-  const craft = await craft.findOne({_id:id});
+  const craft = await Craft.findOne({_id:id});
   res.send(craft);
 });
 
@@ -128,12 +128,14 @@ app.post("/api/crafts", upload.single("image"), async (req, res) => {
       craft.image = "crafts/" + req.file.filename;
     }
 
-    crafts.push(craft);
-    res.send(crafts);
+    const saveResult = await craft.save();
+    res.send(craft);
+
+
 });
 
 
-app.put("/api/crafts/:id", upload.single("image"), (req, res) => {
+app.put("/api/crafts/:id", upload.single("image"), async (req, res) => {
   const craft = crafts.find((r) => r._id === parseInt(req.params.id));
 
   console.log("I found the craft " + craft.name);
@@ -150,17 +152,22 @@ app.put("/api/crafts/:id", upload.single("image"), (req, res) => {
     return;
   }
 
-  craft.name = req.body.name;
-  craft.description = req.body.description;
-  craft.supplies = req.body.supplies.split(",");
-
+  let fieldsToUpdate = {
+    name:req.body.name,
+    descriptiobodyn:req.body.description,
+    supplies:req.body.supplies.split(",")
+  };
 
   console.log("yay validated");
-  if (req.file) {
-    craft.image = "crafts/" + req.file.filename;
+
+  if(req.file){
+    fieldsToUpdate.img = "images/" + req.file.filename;
   }
 
-  res.send(crafts);
+
+  const id = req.params.id;
+  const updateResult = await Craft.updateOne({_id:id},fieldsToUpdate);
+  res.send(updateResult);
 });
 
 app.delete("/api/crafts/:id", (req, res) => {
