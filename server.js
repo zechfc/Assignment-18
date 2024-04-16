@@ -30,7 +30,6 @@ mongoose
   });
 
 const craftSchema = new mongoose.Schema({
-  _id: String,
   name: String,
   image: String,
   description:String,
@@ -94,7 +93,6 @@ app.post("/api/crafts", upload.single("img"), async (req, res) => {
 
 
 app.put("/api/crafts/:id", upload.single("image"), async (req, res) => {
-  const craft = crafts.find((r) => r._id === parseInt(req.params.id));
 
   console.log("I found the craft " + craft.name);
 
@@ -128,8 +126,8 @@ app.put("/api/crafts/:id", upload.single("image"), async (req, res) => {
   res.send(updateResult);
 });
 
-app.delete("/api/crafts/:id", (req, res) => {
-  const craft = crafts.find((r) => r._id === parseInt(req.params.id));
+app.delete("/api/crafts/:id", async (req, res) => {
+  const recipe = await Craft.findByIdAndDelete(req.params.id);
 
   if(!craft){
     res.status(404).send("The craft with the given id was not found");
