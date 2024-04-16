@@ -204,7 +204,7 @@ const populateEditForm = (craft) => {
     console.log("test " + craft._id);
 
     form._id.value = craft._id;
-    console.log(form._id.value);
+    console.log("form "+form._id.value);
 
     form.name.value = craft.name;
     form.description.value = craft.description;

@@ -92,15 +92,15 @@ app.post("/api/crafts", upload.single("img"), async (req, res) => {
 });
 
 
-app.put("/api/crafts/:id", upload.single("image"), async (req, res) => {
+app.put("/api/crafts/:id", upload.single("img"), async (req, res) => {
+  const result = validateCraft(req.body);
 
-  console.log("I found the craft " + craft.name);
+  console.log("I found the craft " + result.name);
 
-  if(!craft){
+  if(!result){
     res.send(404).send("craft with given id was not found");
   }
 
-  const result = validateCraft(req.body);
 
   
   if (result.error) {
