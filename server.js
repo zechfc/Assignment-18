@@ -107,9 +107,9 @@ app.get("/api/crafts/:id", async (req, res) => {
   res.send(craft);
 });
 
-
-app.post("/api/crafts", upload.single("image"), async (req, res) => {
-  const result = validatecraft(req.body);
+//why?
+app.post("/api/crafts", upload.single("img"), async (req, res) => {
+  const result = validateCraft(req.body);
 
   if(result.error){
     res.status(400).send(result.error.details[0].message);
@@ -161,7 +161,7 @@ app.put("/api/crafts/:id", upload.single("image"), async (req, res) => {
   console.log("yay validated");
 
   if(req.file){
-    fieldsToUpdate.img = "images/" + req.file.filename;
+    fieldsToUpdate.image = "crafts/" + req.file.filename;
   }
 
 
