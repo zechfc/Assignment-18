@@ -19,8 +19,8 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer({ storage: storage });
-mongoose
 
+mongoose
   .connect("mongodb+srv://zechfc:GN5IFEvDMy3MkU2R@cluster0.q3aseaf.mongodb.net/")
   .then(() => {
     console.log("connected to mongodb");
@@ -38,11 +38,7 @@ const craftSchema = new mongoose.Schema({
 });
 
 //show our index file when they go to the root of our website
-const Craft = mongoose.model("Recipe", craftSchema);
-
-app.get("/", (req, res)=>{
-  res.sendFile(__dirname + "/index.html");
-});
+const Craft = mongoose.model("craft", craftSchema);
 
 
 
@@ -95,26 +91,38 @@ crafts[3] = {
 // res.json(crafts);
 // });
 
-
-app.get("/api/crafts", (req, res)=>{
-    res.send(crafts);
+app.get("/", (req, res)=>{
+  res.sendFile(__dirname + "/index.html");
 });
 
-app.post("/api/crafts", upload.single("img"), (req, res) => {
-  const result = validateCraft(req.body);
+
+app.get("/api/crafts", async (req, res) => {
+  const crafts = await craft.find();
+  res.send(crafts);
+});
+
+app.get("/api/crafts/:id", async (req, res) => {
+  const id = req.params.id;
+  const craft = await craft.findOne({_id:id});
+  res.send(craft);
+});
+
+
+app.post("/api/crafts", upload.single("image"), async (req, res) => {
+  const result = validatecraft(req.body);
 
   if(result.error){
-    console.log("test")
     res.status(400).send(result.error.details[0].message);
+    return;
   }
 
-    const craft = {
+    const craft = new Craft ({
       _id : crafts.length + 1,
       image: req.body.image,
       name: req.body.name,
       description:req.body.description,
       supplies:req.body.supplies.split(",")
-    }
+    })
 
     if(req.file){
       craft.image = "crafts/" + req.file.filename;
@@ -125,7 +133,7 @@ app.post("/api/crafts", upload.single("img"), (req, res) => {
 });
 
 
-app.put("/api/crafts/:id", upload.single("img"), (req, res) => {
+app.put("/api/crafts/:id", upload.single("image"), (req, res) => {
   const craft = crafts.find((r) => r._id === parseInt(req.params.id));
 
   console.log("I found the craft " + craft.name);
