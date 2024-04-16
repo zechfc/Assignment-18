@@ -76,7 +76,6 @@ app.post("/api/crafts", upload.single("img"), async (req, res) => {
   }
 
     const craft = new Craft ({
-      _id : crafts.length + 1,
       image: req.body.image,
       name: req.body.name,
       description:req.body.description,
