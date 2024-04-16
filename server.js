@@ -38,7 +38,7 @@ const craftSchema = new mongoose.Schema({
 });
 
 //show our index file when they go to the root of our website
-const Craft = mongoose.model("craft", craftSchema);
+const Craft = mongoose.model("Craft", craftSchema);
 
 
 
