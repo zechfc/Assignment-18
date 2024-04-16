@@ -42,47 +42,6 @@ const Craft = mongoose.model("Craft", craftSchema);
 
 
 
-let crafts = [];
-
-crafts[0] = {
-  _id: 0,
-  name: "Beaded JellyFish",
-  image: "crafts/bead-jellyfish.jpg",
-  description: "Create a hanging jellyfish using eggcartons and multicolored beads",
-  supplies: ["String", "egg cartons", "beads"]
-};
-crafts[1] = {
-  _id: 1,
-  name: "Character Bookmarks",
-  image: "crafts/bookmarks.jpeg",
-  description: "Create a little birdy bookmark to always remin you were you were",
-  supplies: ["yellow construction paper",
-  "orange construction paper",
-  "black construction paper"]
-};
-crafts[2] = {
-  _id: 2,
-  name: "Button Flowers",
-  image: "crafts/button-flowers.jpeg",
-  description: "Create a fun bouquet of flowers with your favorite buttons",
-  supplies: [
-      "multicolored buttons",
-      "multicolored flet",
-      "green straws",
-      "ribbon"
-    ]
-};
-crafts[3] = {
-  _id: 3,
-  name: "Cheerio Necklaces",
-  image: "crafts/cheerio-necklace.webp",
-  description: "Create a fun and edible necklace",
-  supplies: [
-    "Cheerios or Fruit Loops",
-    "Elastic string"
-  ]
-}
-
 //my crafts list
 // app.get("/api/crafts", (req,res) => {
 // console.log("Someone is requesting our api")
