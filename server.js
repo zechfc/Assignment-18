@@ -134,8 +134,6 @@ app.delete("/api/crafts/:id", async (req, res) => {
     return;
   }
   
-  const index = crafts.indexOf(craft);
-  crafts.splice(index, 1);
   res.send(craft);
 });
 
