@@ -127,7 +127,7 @@ app.put("/api/crafts/:id", upload.single("image"), async (req, res) => {
 });
 
 app.delete("/api/crafts/:id", async (req, res) => {
-  const recipe = await Craft.findByIdAndDelete(req.params.id);
+  const craft = await Craft.findByIdAndDelete(req.params.id);
 
   if(!craft){
     res.status(404).send("The craft with the given id was not found");
