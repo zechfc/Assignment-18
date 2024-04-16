@@ -110,7 +110,7 @@ app.put("/api/crafts/:id", upload.single("img"), async (req, res) => {
 
   let fieldsToUpdate = {
     name:req.body.name,
-    descriptiobodyn:req.body.description,
+    description:req.body.description,
     supplies:req.body.supplies.split(",")
   };
 
